@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Search, Menu, X, Star, Trash2, Plus, Minus, ArrowRight, CheckCircle, CreditCard, MapPin, Phone, Mail } from 'lucide-react';
+import { ShoppingCart, Search, Menu, X, Star, Trash2, Plus, Minus, ArrowRight, CheckCircle, CreditCard, MapPin, Phone, Mail, BookOpen, MessageCircle } from 'lucide-react';
 
 // --- Mock Data ---
 const PRODUCTS = [
@@ -173,13 +173,11 @@ const CheckoutForm = ({ cartTotal, onPlaceOrder, onBack }) => {
     address: '',
     city: '',
     zip: '',
-    card: ''
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API call
     setTimeout(() => {
       setLoading(false);
       onPlaceOrder(formData);
@@ -228,11 +226,6 @@ const CheckoutForm = ({ cartTotal, onPlaceOrder, onBack }) => {
             </div>
           </div>
 
-          <div className="space-y-2">
-             <label className="text-sm font-medium text-gray-700">Card Number (Mock)</label>
-             <input required name="card" onChange={handleChange} className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" placeholder="0000 0000 0000 0000" />
-          </div>
-
           <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Total Amount</p>
@@ -259,10 +252,158 @@ const SuccessScreen = ({ onHome }) => (
   </div>
 );
 
+// ---Blog & Contact ---
+
+const BLOG_POSTS = [
+  { 
+    id: 1, 
+    title: "Top 10 Fashion Trends for 2025", 
+    date: "Nov 25, 2025", 
+    excerpt: "Discover what's trending this season with our comprehensive guide to style.", 
+    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&auto=format&fit=crop",
+    content: `
+      Fashion in 2025 is all about combining comfort with bold statements. Here are the top trends you need to know:
+      
+      1. Sustainable Fabrics: Eco-friendly materials are no longer niche; they are the standard. Look for organic cotton and recycled polyester.
+      2. Oversized Silhouettes: Tight fits are out. Baggy jeans, oversized blazers, and loose shirts are dominating the streets.
+      3. Digital Lavender: This color is everywhere. It's calming yet futuristic and works well for both casual and formal wear.
+      4. Retro Tech: Styles inspired by the early 2000s (Y2K) are making a huge comeback with a modern twist.
+      
+      Remember, the best trend is the one that makes you feel confident!`
+  },
+  { 
+    id: 2, 
+    title: "How to Choose the Perfect Headphones", 
+    date: "Nov 20, 2025", 
+    excerpt: "Noise-cancelling or wireless? We break down the specs you need to know.", 
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop",
+    content: `
+      Choosing the right headphones can be overwhelming with so many options. Here is a simple guide to help you decide:
+
+      1. Over-Ear vs. In-Ear: 
+      Over-ear headphones offer better soundstage and comfort for long sessions, while in-ear earbuds are perfect for gym and commute due to their portability.
+
+      2. Noise Cancellation (ANC):
+      If you travel often or work in a noisy environment, Active Noise Cancellation is a must-have feature. It uses microphones to cancel out ambient noise.
+
+      3. Battery Life:
+      Look for headphones that offer at least 20 hours of playback. Fast charging is also a game-changer – 10 minutes of charge for 2 hours of play is standard now.
+
+      4. Sound Profile:
+      Do you like heavy bass? Or do you prefer crystal clear vocals? Check reviews to see if the sound signature matches your taste.`
+  },
+  { 
+    id: 3, 
+    title: "Minimalist Home Decor Ideas", 
+    date: "Nov 15, 2025", 
+    excerpt: "Transform your living space with these simple yet elegant tips.", 
+    image: "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=500&auto=format&fit=crop",
+    content: `
+      Minimalism isn't just about having less; it's about making room for what matters. Here is how to achieve the look:
+
+      1. Declutter First: Before buying anything, remove items you haven't used in a year. Open space is the key to minimalism.
+      2. Neutral Color Palette: Stick to whites, beiges, and soft greys. You can add a pop of color with a single piece of art or a plant.
+      3. Quality over Quantity: Instead of 5 cheap decorative items, invest in one high-quality vase or lamp that stands out.
+      4. Let in the Light: Use sheer curtains or no curtains at all to maximize natural light. It makes the space look bigger and cleaner.`
+  }
+];
+
+// --- Blog Screen Component ---
+const BlogScreen = ({ onBack }) => {
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  // Agar koi blog select hua hai to uski details dikhao
+  if (selectedPost) {
+    return (
+      <div className="max-w-4xl mx-auto animate-in fade-in zoom-in duration-300">
+        <button 
+          onClick={() => setSelectedPost(null)} 
+          className="flex items-center text-indigo-600 font-medium mb-6 hover:underline"
+        >
+          <ArrowRight className="rotate-180 mr-2" size={20} /> Back to Articles
+        </button>
+        
+        <img src={selectedPost.image} alt={selectedPost.title} className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-lg mb-8"/>
+        
+        <div className="prose max-w-none">
+          <span className="text-sm font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">{selectedPost.date}</span>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mt-4 mb-6">{selectedPost.title}</h1>
+          
+          <div className="text-gray-700 leading-relaxed text-lg whitespace-pre-line">
+            {selectedPost.content}
+          </div>
+        </div>
+             </div>
+    );
+  }
+
+  // Agar koi select nahi hai to List dikhao
+  return (
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <button onClick={onBack} className="flex items-center text-gray-500 hover:text-indigo-600 mb-6">
+        <ArrowRight className="rotate-180 mr-2" size={20} /> Back to Home
+      </button>
+      <h2 className="text-3xl font-bold text-gray-900 mb-8">Latest from Our Blog</h2>
+      <div className="grid md:grid-cols-3 gap-8">
+        {BLOG_POSTS.map(post => (
+          <div key={post.id} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all flex flex-col h-full">
+            <img src={post.image} alt={post.title} className="w-full h-48 object-cover"/>
+            <div className="p-6 flex flex-col flex-grow">
+              <span className="text-xs font-semibold text-indigo-600">{post.date}</span>
+              <h3 className="font-bold text-lg mt-2 mb-2 leading-tight">{post.title}</h3>
+              <p className="text-gray-500 text-sm mb-4 flex-grow">{post.excerpt}</p>
+              <button 
+                onClick={() => { setSelectedPost(post); window.scrollTo(0,0); }}
+                className="text-indigo-600 font-medium text-sm flex items-center hover:underline mt-auto"
+              >
+                Read More <ArrowRight size={16} className="ml-1"/>
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ContactScreen = ({ onBack }) => (
+  <div className="max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <button onClick={onBack} className="flex items-center text-gray-500 hover:text-indigo-600 mb-6">
+      <ArrowRight className="rotate-180 mr-2" size={20} /> Back to Home
+    </button>
+    
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="p-8 bg-indigo-900 text-white text-center">
+            <MessageCircle size={48} className="mx-auto mb-4 opacity-80"/>
+            <h2 className="text-3xl font-bold">Get in Touch</h2>
+            <p className="text-indigo-200 mt-2">We'd love to hear from you. Send us a message!</p>
+        </div>
+        
+        <div className="p-8 space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                    <input className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Your Name"/>
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="your@email.com"/>
+                </div>
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                <textarea rows="4" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="How can we help you?"></textarea>
+            </div>
+            <Button className="w-full py-3 text-lg">Send Message</Button>
+        </div>
+    </div>
+  </div>
+);
+
 // --- Main App Component ---
 
 export default function App() {
-  const [view, setView] = useState('home'); // home, checkout, success
+  const [view, setView] = useState('home'); // home, checkout, success, blogs, contact
   const [cartOpen, setCartOpen] = useState(false);
   const [cart, setCart] = useState([]);
   const [search, setSearch] = useState('');
@@ -318,7 +459,12 @@ export default function App() {
           <div className="flex items-center justify-between h-16">
             
             {/* Logo */}
-            <div className="flex items-center cursor-pointer" onClick={() => setView('home')}>
+            <div className="flex items-center cursor-pointer group" onClick={() => { 
+                setView('home'); 
+                setCategory('All'); 
+                setSearch(''); 
+                window.scrollTo(0,0); 
+              }}>
               <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl mr-2">S</div>
               <span className="font-bold text-xl tracking-tight text-gray-900">ShopVibe</span>
             </div>
@@ -435,6 +581,49 @@ export default function App() {
                 <Button variant="outline" onClick={() => {setSearch(''); setCategory('All');}} className="mt-6 mx-auto">Clear Filters</Button>
               </div>
             )}
+
+            {/* --- Extra Info Cards for Home View --- */}
+            {!search && category === 'All' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 pb-8">
+                {/* Blog Card */}
+                <div 
+                  onClick={() => { setView('blogs'); window.scrollTo(0,0); }}
+                  className="group relative h-64 rounded-2xl overflow-hidden cursor-pointer shadow-lg hover:shadow-xl transition-all"
+                >
+                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499750310159-5298019773dd?w=800')] bg-cover bg-center transition-transform duration-700 group-hover:scale-110"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-8 text-white">
+                    <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mb-4">
+                      <BookOpen size={24} className="text-white"/>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">Read Our Blog</h3>
+                    <p className="text-gray-200 text-sm mb-4">Latest trends, guides, and lifestyle tips.</p>
+                    <span className="flex items-center text-sm font-bold text-indigo-300 group-hover:text-white transition-colors">
+                      Explore Articles <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform"/>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Contact Card */}
+                <div 
+                  onClick={() => { setView('contact'); window.scrollTo(0,0); }}
+                  className="group relative h-64 rounded-2xl overflow-hidden cursor-pointer shadow-lg hover:shadow-xl transition-all"
+                >
+                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=800')] bg-cover bg-center transition-transform duration-700 group-hover:scale-110"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/90 to-indigo-600/30"></div>
+                  <div className="absolute bottom-0 left-0 p-8 text-white">
+                    <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mb-4">
+                      <MessageCircle size={24} className="text-white"/>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">Need Help?</h3>
+                    <p className="text-indigo-100 text-sm mb-4">Have questions? We are here to assist you 24/7.</p>
+                    <span className="flex items-center text-sm font-bold text-indigo-300 group-hover:text-white transition-colors">
+                      Contact Support <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform"/>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         )}
 
@@ -445,6 +634,11 @@ export default function App() {
         {view === 'success' && (
           <SuccessScreen onHome={() => setView('home')} />
         )}
+
+        {view === 'blogs' && <BlogScreen onBack={() => setView('home')} />}
+        
+        {view === 'contact' && <ContactScreen onBack={() => setView('home')} />}
+
       </main>
 
       {/* Cart Drawer Overlay */}
@@ -504,33 +698,66 @@ export default function App() {
       )}
 
       {/* Footer */}
+      
       <footer className="bg-white border-t border-gray-200 py-12 mt-12">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
            <div>
-             <div className="flex items-center mb-4">
+             <div className="flex items-center mb-4 cursor-pointer group" onClick={() => { 
+                  setView('home'); 
+                  setCategory('All'); 
+                  setSearch(''); 
+                  window.scrollTo(0,0); 
+                }}>
                 <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl mr-2">S</div>
                 <span className="font-bold text-xl tracking-tight text-gray-900">ShopVibe</span>
              </div>
              <p className="text-gray-500 text-sm">Your one-stop destination for premium products. Quality guaranteed.</p>
            </div>
            
-           <div>
-             <h3 className="font-bold text-gray-900 mb-4">Shop</h3>
-             <ul className="space-y-2 text-gray-500 text-sm">
-               <li><a href="#" className="hover:text-indigo-600">Electronics</a></li>
-               <li><a href="#" className="hover:text-indigo-600">Fashion</a></li>
-               <li><a href="#" className="hover:text-indigo-600">Home & Living</a></li>
-               <li><a href="#" className="hover:text-indigo-600">New Arrivals</a></li>
-             </ul>
-           </div>
+          <div>
+              <h3 className="font-bold text-gray-900 mb-4">Shop</h3>
+              <ul className="space-y-2 text-gray-500 text-sm flex flex-col items-start">
+                <li>
+                  <button 
+                    onClick={() => { setCategory('Electronics'); setView('home'); window.scrollTo(0,0); }} 
+                    className="hover:text-indigo-600 transition-colors"
+                  >
+                    Electronics
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => { setCategory('Fashion'); setView('home'); window.scrollTo(0,0); }} 
+                    className="hover:text-indigo-600 transition-colors"
+                  >
+                    Fashion
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => { setCategory('Home'); setView('home'); window.scrollTo(0,0); }} 
+                    className="hover:text-indigo-600 transition-colors"
+                  >
+                    Home & Living
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => { setCategory('All'); setView('home'); window.scrollTo(0,0); }} 
+                    className="hover:text-indigo-600 transition-colors"
+                  >
+                    New Arrivals
+                  </button>
+                </li>
+              </ul>
+            </div>
 
            <div>
              <h3 className="font-bold text-gray-900 mb-4">Support</h3>
              <ul className="space-y-2 text-gray-500 text-sm">
-               <li><a href="#" className="hover:text-indigo-600">Contact Us</a></li>
-               <li><a href="#" className="hover:text-indigo-600">FAQs</a></li>
-               <li><a href="#" className="hover:text-indigo-600">Shipping Info</a></li>
-               <li><a href="#" className="hover:text-indigo-600">Returns</a></li>
+               <li><button onClick={() => { setView('contact'); window.scrollTo(0,0); }} className="hover:text-indigo-600">Contact Us</button></li>
+               
+                <li><button onClick={() => { setView('blogs'); window.scrollTo(0,0); }} className="hover:text-indigo-600">FAQs</button></li>
              </ul>
            </div>
 
@@ -538,8 +765,8 @@ export default function App() {
              <h3 className="font-bold text-gray-900 mb-4">Contact</h3>
              <ul className="space-y-2 text-gray-500 text-sm">
                <li className="flex items-center gap-2"><MapPin size={16}/>  Lahore</li>
-               <li className="flex items-center gap-2"><Phone size={16}/> +92 300 1234567</li>
-               <li className="flex items-center gap-2"><Mail size={16}/> support@shopvibe.com</li>
+              
+               <li className="flex items-center gap-2"><Mail size={16}/> support@shopvibe41.com</li>
              </ul>
            </div>
         </div>
